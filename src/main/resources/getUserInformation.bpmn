@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tns="http://www.activiti.org/test" xmlns:xsd="http://www.w3.org/2001/XMLSchema" id="m1551073567471" name="" targetNamespace="http://www.activiti.org/test" exporter="Camunda Modeler" exporterVersion="2.2.4">
+  <process id="getUserInformation" name="User" processType="None" isClosed="false" isExecutable="true">
+    <startEvent id="_2" name="StartEvent" />
+    <serviceTask id="UserInformation" name="UserInformation" camunda:delegateExpression="#{userInformation}" />
+    <serviceTask id="UserAddressInformation" name="UserAddressInformation" camunda:delegateExpression="#{userAddressInformation}" />
+    <endEvent id="_5" name="EndEvent" />
+    <sequenceFlow id="_6" sourceRef="_2" targetRef="UserInformation" />
+    <sequenceFlow id="_7" sourceRef="UserInformation" targetRef="UserAddressInformation" />
+    <sequenceFlow id="_8" sourceRef="UserAddressInformation" targetRef="_5" />
+  </process>
+  <bpmndi:BPMNDiagram id="Diagram-_1" name="New Diagram" documentation="background=#FFFFFF;count=1;horizontalcount=1;orientation=0;width=842.4;height=1195.2;imageableWidth=832.4;imageableHeight=1185.2;imageableX=5.0;imageableY=5.0">
+    <bpmndi:BPMNPlane bpmnElement="getUserInformation">
+      <bpmndi:BPMNShape id="Shape-_2" bpmnElement="_2">
+        <omgdc:Bounds x="90" y="135" width="32" height="32" />
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds x="0" y="0" width="32" height="32" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape-UserInformation" bpmnElement="UserInformation">
+        <omgdc:Bounds x="235" y="140" width="85" height="55" />
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds x="0" y="0" width="85" height="55" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape-UserAddressInformation" bpmnElement="UserAddressInformation">
+        <omgdc:Bounds x="410" y="125" width="85" height="55" />
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds x="0" y="0" width="85" height="55" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape-_5" bpmnElement="_5">
+        <omgdc:Bounds x="655" y="145" width="32" height="32" />
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds x="0" y="0" width="32" height="32" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="BPMNEdge__6" bpmnElement="_6" sourceElement="_2">
+        <omgdi:waypoint x="122" y="151" />
+        <omgdi:waypoint x="235" y="167.5" />
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds x="0" y="0" width="0" height="0" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge__7" bpmnElement="_7">
+        <omgdi:waypoint x="320" y="167.5" />
+        <omgdi:waypoint x="410" y="152.5" />
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds x="0" y="0" width="0" height="0" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge__8" bpmnElement="_8" targetElement="_5">
+        <omgdi:waypoint x="495" y="152.5" />
+        <omgdi:waypoint x="655" y="161" />
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds x="0" y="0" width="0" height="0" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>
