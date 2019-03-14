@@ -35,6 +35,16 @@ dependencies {
 	implementation group: 'org.camunda.bpm.springboot', name: 'camunda-bpm-spring-boot-starter-test', version: '3.2.1'
 	implementation group: 'org.camunda.bpm.springboot', name: 'camunda-bpm-spring-boot-starter-rest', version: '3.2.1'
 	implementation group: 'org.camunda.bpm.springboot', name: 'camunda-bpm-spring-boot-starter-webapp',  version: '3.2.1'
+	compile group: 'org.camunda.spin', name: 'camunda-spin-dataformat-json-jackson', version: '1.6.6'
+	compile group: 'org.camunda.connect', name: 'camunda-connect-connectors-all', version: '1.1.2'
+	compile group: 'org.camunda.bpm', name: 'camunda-engine-plugin-spin', version: '7.10.0'
+	compile group: 'org.camunda.bpm', name: 'camunda-engine-plugin-connect', version: '7.8.0'
+	testCompile group: 'org.camunda.spin', name: 'camunda-spin-dataformat-all', version: '1.0.0-alpha6'
 
+//	compile group: 'org.camunda.bpm.extension.springboot', name: 'camunda-bpm-spring-boot-starter-webapp', version: '2.3.0-SNAPSHOT'
+//	compile group: 'org.camunda.bpm.extension.springboot', name: 'camunda-bpm-spring-boot-starter-rest', version: '2.2.0'
+//	compile group: 'org.camunda.connect', name: 'camunda-connect-connectors-all', version: '1.1.2'
+//	compile group: 'org.camunda.bpm', name: 'camunda-engine-plugin-connect', version: '7.8.0'
+	
 	implementation group: 'com.h2database', name: 'h2'
 }
