@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tns="http://www.activiti.org/test" xmlns:xsd="http://www.w3.org/2001/XMLSchema" id="m1551765094079" name="" targetNamespace="http://www.activiti.org/test" exporter="Camunda Modeler" exporterVersion="2.2.4">
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:activiti="http://activiti.org/bpmn" xmlns:tns="http://www.activiti.org/test" xmlns:xsd="http://www.w3.org/2001/XMLSchema" id="m1551765094079" name="" targetNamespace="http://www.activiti.org/test" exporter="Camunda Modeler" exporterVersion="2.2.4">
   <process id="testConnector" processType="None" isClosed="false" isExecutable="true">
     <startEvent id="_2" camunda:formKey="data">
       <extensionElements>
@@ -8,7 +8,7 @@
         </camunda:formData>
       </extensionElements>
     </startEvent>
-    <serviceTask id="getemailId" name="GetUserEmailId">
+    <serviceTask id="getemailId" name="GetUserEmailId" activiti:exclusive="true">
       <extensionElements>
         <camunda:connector>
           <camunda:inputOutput>
@@ -28,13 +28,10 @@
           <camunda:property />
         </camunda:properties>
       </extensionElements>
-      <outgoing>SequenceFlow_04u97vj</outgoing>
     </serviceTask>
-    <endEvent id="_5">
-      <incoming>SequenceFlow_1f1t5js</incoming>
-    </endEvent>
+    <endEvent id="_5" />
     <sequenceFlow id="filter" sourceRef="_2" targetRef="getemailId" />
-    <serviceTask id="postUserDataFinal" name="PostUserDataFinal&#10;">
+    <serviceTask id="postUserDataFinal" name="PostUserDataFinal" activiti:exclusive="true">
       <extensionElements>
         <camunda:connector>
           <camunda:inputOutput>
@@ -47,24 +44,37 @@
               </camunda:map>
             </camunda:inputParameter>
             <camunda:inputParameter name="payload">${payload}</camunda:inputParameter>
+            <camunda:inputParameter name="testPayload">
+              <camunda:script scriptFormat="Javascript">var dummyPayload = S(payload);
+var dummyPayloadJson = JSON.parse(dummyPayload);
+print("***************"+dummyPayload );</camunda:script>
+            </camunda:inputParameter>
           </camunda:inputOutput>
           <camunda:connectorId>http-connector</camunda:connectorId>
         </camunda:connector>
-        <camunda:inputOutput>
-          <camunda:inputParameter name="payload">${payload}</camunda:inputParameter>
-        </camunda:inputOutput>
       </extensionElements>
-      <incoming>SequenceFlow_04u97vj</incoming>
-      <outgoing>SequenceFlow_1f1t5js</outgoing>
+      <incoming>SequenceFlow_1b6tl90</incoming>
     </serviceTask>
     <sequenceFlow id="SequenceFlow_1f1t5js" sourceRef="postUserDataFinal" targetRef="_5" />
-    <sequenceFlow id="SequenceFlow_04u97vj" sourceRef="getemailId" targetRef="postUserDataFinal">
+    <sequenceFlow id="SequenceFlow_04u97vj" sourceRef="getemailId" targetRef="_3">
       <extensionElements>
         <camunda:properties>
           <camunda:property name="email" value="{email}" />
         </camunda:properties>
       </extensionElements>
     </sequenceFlow>
+    <scriptTask id="_3" name="mergepayload" scriptFormat="Javascript" activiti:exclusive="true">
+      <script>var dummyPayload = S(payload);
+var dummyPayloadJson = JSON.parse(dummyPayload);
+print("***************"+dummyPayload );
+var value = S(NUMBER, 'application/json');
+var json = JSON.parse(value);
+dummyPayloadJson.id =  json.id;
+print("^^^^^^^^^^^^"+ JSON.stringify(dummyPayloadJson));
+JSON.stringify(dummyPayloadJson);
+execution.setVariable("payload", JSON.stringify(dummyPayloadJson));</script>
+    </scriptTask>
+    <sequenceFlow id="SequenceFlow_1b6tl90" sourceRef="_3" targetRef="postUserDataFinal" />
   </process>
   <bpmndi:BPMNDiagram id="Diagram-_1" name="New Diagram" documentation="background=#FFFFFF;count=1;horizontalcount=1;orientation=0;width=842.4;height=1195.2;imageableWidth=832.4;imageableHeight=1185.2;imageableX=5.0;imageableY=5.0">
     <bpmndi:BPMNPlane bpmnElement="testConnector">
@@ -75,7 +85,7 @@
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Shape-getemailId" bpmnElement="getemailId">
-        <omgdc:Bounds x="320" y="175" width="85" height="55" />
+        <omgdc:Bounds x="269" y="175" width="85" height="55" />
         <bpmndi:BPMNLabel>
           <omgdc:Bounds x="0" y="0" width="85" height="55" />
         </bpmndi:BPMNLabel>
@@ -86,29 +96,47 @@
           <omgdc:Bounds x="0" y="0" width="32" height="32" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Shape-_3" bpmnElement="postUserDataFinal">
+      <bpmndi:BPMNShape id="Shape-postUserDataFinal" bpmnElement="postUserDataFinal">
         <omgdc:Bounds x="538" y="182" width="85" height="55" />
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds x="0" y="0" width="85" height="55" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape-_3" bpmnElement="_3">
+        <omgdc:Bounds x="409" y="175" width="85" height="55" />
         <bpmndi:BPMNLabel>
           <omgdc:Bounds x="0" y="0" width="85" height="55" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="BPMNEdge_filter" bpmnElement="filter" sourceElement="_2" targetElement="getemailId">
         <omgdi:waypoint x="232" y="203" />
-        <omgdi:waypoint x="320" y="202.5" />
+        <omgdi:waypoint x="251" y="203" />
+        <omgdi:waypoint x="251" y="202" />
+        <omgdi:waypoint x="269" y="202" />
         <bpmndi:BPMNLabel>
           <omgdc:Bounds x="-1" y="-1" width="-1" height="-1" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="SequenceFlow_1f1t5js_di" bpmnElement="SequenceFlow_1f1t5js">
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_1f1t5js" bpmnElement="SequenceFlow_1f1t5js" sourceElement="postUserDataFinal" targetElement="_5">
         <omgdi:waypoint x="623" y="210" />
         <omgdi:waypoint x="658" y="210" />
         <omgdi:waypoint x="658" y="203" />
-        <omgdi:waypoint x="695" y="203" />
+        <omgdi:waypoint x="696.6125054300618" y="210" />
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds x="-1" y="-1" width="-1" height="-1" />
+        </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="SequenceFlow_04u97vj_di" bpmnElement="SequenceFlow_04u97vj">
-        <omgdi:waypoint x="405" y="203" />
-        <omgdi:waypoint x="470" y="203" />
-        <omgdi:waypoint x="470" y="210" />
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_04u97vj" bpmnElement="SequenceFlow_04u97vj" sourceElement="Shape-getemailId" targetElement="Shape-_3">
+        <omgdi:waypoint x="354" y="203" />
+        <omgdi:waypoint x="409" y="203" />
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds x="-1" y="-1" width="-1" height="-1" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_1b6tl90_di" bpmnElement="SequenceFlow_1b6tl90">
+        <omgdi:waypoint x="494" y="203" />
+        <omgdi:waypoint x="516" y="203" />
+        <omgdi:waypoint x="516" y="210" />
         <omgdi:waypoint x="538" y="210" />
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>

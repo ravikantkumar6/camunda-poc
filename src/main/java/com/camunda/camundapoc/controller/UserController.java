@@ -45,10 +45,11 @@ public class UserController {
     }
 
     @PostMapping(name = "/step2" ,consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void postUserDataFinal(@RequestBody Map<String, String> userDetail) {
+    public String postUserDataFinal(@RequestBody Map<String, String> userDetail) {
         System.out.println("***Method Step2 Method****");
         System.out.println("Email ::: " + userDetail.keySet().toString());
         userDetail.keySet().forEach(key -> System.out.println(userDetail.get(key)));
+        return "DONE...";
     }
 
     private ProcessInstance startProcessInstance(UserDetail userDetail) {
